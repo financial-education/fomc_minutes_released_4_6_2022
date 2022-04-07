@@ -2,17 +2,32 @@
 #+author: Matt Brigida, Ph.D.
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 
-
 #+begin_src R :session fed :exports code :results none
 library(quantmod)
+library(highcharter)
+library(htmlwidgets)
+#+end_src
+
+#+begin_src R :session fed :exports code :results none
 assets <- getSymbols("WALCL", src="FRED", auto.assign=FALSE)
 assets <- to.monthly(assets)
 assets <- assets$assets.Close
 #+end_src
 
-#+begin_src R :session fed :exports both
+#+begin_src R :session fed :exports both :results none
 forecast <- rep(0, 24)
 forecast[1] <- assets[dim(assets)[1], ]
+for (i in 2:24){
+  forecast[i] <- forecast[i-1] - 95000
+  }
 
+all <- append(as.numeric(assets$assets.Close), as.numeric(forecast))
+months <- seq(as.Date("2002-12-01"), as.Date("2024-03-01"), by="month")
+all <- as.xts(all, order.by=months)
+saveWidget(hchart(log(all)), file = "log_chart.html")
 #+end_src
+
+#+begin_export html
+<iframe src="./log_chart.html" width="100%" height="800pt"></iframe>
+#+end_export
 
