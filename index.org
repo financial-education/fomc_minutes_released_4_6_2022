@@ -1,0 +1,18 @@
+#+title: FOMC Minutes Released April 6 2022
+#+author: Matt Brigida, Ph.D.
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+
+
+#+begin_src R :session fed :exports code :results none
+library(quantmod)
+assets <- getSymbols("WALCL", src="FRED", auto.assign=FALSE)
+assets <- to.monthly(assets)
+assets <- assets$assets.Close
+#+end_src
+
+#+begin_src R :session fed :exports both
+forecast <- rep(0, 24)
+forecast[1] <- assets[dim(assets)[1], ]
+
+#+end_src
+
