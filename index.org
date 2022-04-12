@@ -2,19 +2,21 @@
 #+author: Matt Brigida, Ph.D.
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 
-#+begin_src R :session fed :exports code :results none
+We pull total Fed assets data from the FRED database.  Then, starting with assets as of March 2022, we lower these assets by $95 billion per month for the next two years.  This gives us $6.7 trillion in Fed assets by April 2024.
+
+#+begin_src R :session fed :exports none :results none
 library(quantmod)
 library(highcharter)
 library(htmlwidgets)
 #+end_src
 
-#+begin_src R :session fed :exports code :results none
+#+begin_src R :session fed :exports none :results none
 assets <- getSymbols("WALCL", src="FRED", auto.assign=FALSE)
 assets <- to.monthly(assets)
 assets <- assets$assets.Close
 #+end_src
 
-#+begin_src R :session fed :exports both :results none
+#+begin_src R :session fed :exports none :results none
 forecast <- rep(0, 24)
 forecast[1] <- assets[dim(assets)[1], ]
 for (i in 2:24){
@@ -22,12 +24,24 @@ for (i in 2:24){
   }
 
 all <- append(as.numeric(assets$assets.Close), as.numeric(forecast))
-months <- seq(as.Date("2002-12-01"), as.Date("2024-03-01"), by="month")
+months <- seq(as.Date("2002-12-01"), as.Date("2024-04-01"), by="month")
 all <- as.xts(all, order.by=months)
-saveWidget(hchart(log(all)), file = "log_chart.html")
+nolog <- hchart(all) %>% hc_title(text = "Fed Assets") %>% hc_add_theme(hc_theme_db())
+log <- hchart(log(all)) %>% hc_title(text = "Fed Assets (Log Scale)") %>% hc_add_theme(hc_theme_db())
+saveWidget(nolog, file = "levels_chart.html")
+saveWidget(log, file = "log_chart.html")
 #+end_src
+
+
+#+begin_export html
+<iframe src="./levels_chart.html" width="100%" height="800pt"></iframe>
+#+end_export
+
+A log chart will provide some perspective on the recent increase in Fed assets relative to earlier increases, such as after 2008.
 
 #+begin_export html
 <iframe src="./log_chart.html" width="100%" height="800pt"></iframe>
 #+end_export
 
+
+Will the assets reduction cause a stock market decline?  The ratio of fed assets (in billions) to S&P value in 2017 was about 1.8.  Keeping this constant would give us an S&P 500 value of 3751.
