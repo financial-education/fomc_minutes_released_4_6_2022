@@ -1,6 +1,7 @@
 #+title: FOMC Minutes Released April 6 2022
 #+author: Matt Brigida, Ph.D.
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+PROPERTY: header-args :eval no
 
 We pull total Fed assets data from the FRED database.  Then, starting with assets as of March 2022, we lower these assets by $95 billion per month for the next two years.  This gives us $6.7 trillion in Fed assets by April 2024.
 
