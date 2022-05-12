@@ -45,4 +45,4 @@ A log chart will provide some perspective on the recent increase in Fed assets r
 #+end_export
 
 
-Will the assets reduction cause a stock market decline?  The ratio of fed assets (in billions) to S&P value in 2017 was about 1.8.  Keeping this constant would give us an S&P 500 value of 3751.
+Will the assets reduction cause a stock market decline?  The ratio of fed assets (in billions) to S&P value in 2017 was about 1.8.  **Keeping this constant would give us an S&P 500 value of 3751.**
